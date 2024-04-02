@@ -9,11 +9,14 @@ namespace PICA.UserMicroservice.WebAPI.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly string _connectionString;
+        private readonly ILogger _logger;
 
-        public UserRepository(IConfiguration configuration)
+        public UserRepository(IConfiguration configuration, ILogger<UserRepository> logger)
         {
             _connectionString = configuration.GetConnectionString("Default")
                 ?? throw new ArgumentNullException("ConnectionString can't be null");
+            _logger = logger;
+            _logger.LogInformation($"Seteo de cadena de conexion {_connectionString}");
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
