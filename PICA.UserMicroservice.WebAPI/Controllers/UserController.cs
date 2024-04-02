@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PICA.UserMicroservice.WebAPI.Interfaces;
 using PICA.UserMicroservice.WebAPI.Models;
+using System.Text.Json;
 
 namespace PICA.UserMicroservice.WebAPI.Controllers
 {
@@ -23,6 +24,8 @@ namespace PICA.UserMicroservice.WebAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
+            _logger.LogInformation("UserController - GET");
+
             return await _userRepository.GetAllAsync();
         }
 
@@ -30,6 +33,8 @@ namespace PICA.UserMicroservice.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            _logger.LogInformation("UserController - GET with param {0}", id);
+
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)
             {
@@ -42,6 +47,8 @@ namespace PICA.UserMicroservice.WebAPI.Controllers
         [HttpPost]
         public async Task Post([FromBody] User user)
         {
+            _logger.LogInformation("UserController - POST {0}", JsonSerializer.Serialize(user));
+
             await _userRepository.CreateAsync(user);
         }
     }
